@@ -4,12 +4,11 @@ import { useLanguage } from '../../i18n/LanguageProvider'
 import { ContactIllustration } from './ContactIllustration'
 import './Contact.css'
 
-// Fill these when real public contact details are available.
 // A backend or email service can be connected to handleFormSubmit later.
 export const CONTACT_LINKS = {
-  email: '',
+  email: 'chnafahamza33@gmail.com',
   github: '',
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/hamza-chnafa-889410284',
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -211,7 +210,7 @@ export function Contact() {
                     }
                     {...(method.id === 'email'
                       ? {}
-                      : { target: '_blank', rel: 'noreferrer noopener' })}
+                      : { target: '_blank', rel: 'noopener noreferrer' })}
                   >
                     {method.href.replace(/^mailto:/, '')}
                   </a>
