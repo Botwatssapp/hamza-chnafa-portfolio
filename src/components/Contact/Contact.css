@@ -190,11 +190,20 @@
     box-shadow var(--duration-fast) var(--ease-out);
 }
 
-.contact-submit:hover {
+.contact-submit:hover:not(:disabled) {
   background: #173324;
   border-color: #173324;
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgb(31 61 43 / 0.16);
+}
+
+.contact-submit:disabled {
+  cursor: wait;
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
+  box-shadow: none;
+  transform: none;
 }
 
 .contact-success {

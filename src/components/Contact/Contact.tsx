@@ -4,18 +4,24 @@ import { useLanguage } from '../../i18n/LanguageProvider'
 import { ContactIllustration } from './ContactIllustration'
 import './Contact.css'
 
-// A backend or email service can be connected to handleFormSubmit later.
 export const CONTACT_LINKS = {
   email: 'chnafahamza33@gmail.com',
   github: '',
   linkedin: 'https://www.linkedin.com/in/hamza-chnafa-889410284',
 }
 
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
+const CONTACT_SUBJECT = 'New Portfolio Contact Message'
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+type FormStatus = 'idle' | 'success' | 'error'
 type FieldName = 'name' | 'email' | 'message'
 type FormValues = Record<FieldName, string>
 type FormErrors = Partial<Record<FieldName, string>>
+
+type Web3FormsResult = {
+  success?: boolean
+}
 
 const INITIAL_VALUES: FormValues = {
   name: '',
@@ -46,7 +52,8 @@ export function Contact() {
   const formId = useId()
   const [values, setValues] = useState<FormValues>(INITIAL_VALUES)
   const [errors, setErrors] = useState<FormErrors>({})
-  const [ready, setReady] = useState(false)
+  const [status, setStatus] = useState<FormStatus>('idle')
+  const [submitting, setSubmitting] = useState(false)
 
   const methods = useMemo(
     () => [
@@ -60,11 +67,11 @@ export function Contact() {
   const nameErrorId = `${formId}-name-error`
   const emailErrorId = `${formId}-email-error`
   const messageErrorId = `${formId}-message-error`
-  const successId = `${formId}-success`
+  const formStatusId = `${formId}-status`
 
   function updateField(field: FieldName, value: string) {
     setValues((current) => ({ ...current, [field]: value }))
-    setReady(false)
+    setStatus('idle')
     if (errors[field]) {
       setErrors((current) => {
         const next = { ...current }
@@ -74,8 +81,10 @@ export function Contact() {
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    if (submitting) return
 
     const nextErrors = validate(values, {
       nameRequired: t.contact.nameRequired,
@@ -86,12 +95,49 @@ export function Contact() {
     setErrors(nextErrors)
 
     if (Object.keys(nextErrors).length > 0) {
-      setReady(false)
+      setStatus('idle')
       return
     }
 
-    // Local validation only. Connect an email API or form service here later.
-    setReady(true)
+    setSubmitting(true)
+    setStatus('idle')
+
+    try {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'fbff3352-6ee4-4a6f-bc45-350f73361e3f',
+          name: values.name.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+          subject: CONTACT_SUBJECT,
+        }),
+      })
+
+      let result: Web3FormsResult = {}
+      try {
+        result = (await response.json()) as Web3FormsResult
+      } catch {
+        result = {}
+      }
+
+      if (!response.ok || result.success !== true) {
+        setStatus('error')
+        return
+      }
+
+      setValues(INITIAL_VALUES)
+      setErrors({})
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -185,13 +231,24 @@ export function Contact() {
               ) : null}
             </div>
 
-            <button className="contact-submit" type="submit">
-              {t.contact.submit}
+            <button
+              className="contact-submit"
+              type="submit"
+              disabled={submitting}
+              aria-busy={submitting}
+            >
+              {submitting ? t.contact.sending : t.contact.submit}
             </button>
 
-            {ready ? (
-              <p id={successId} className="contact-success" role="status">
+            {status === 'success' ? (
+              <p id={formStatusId} className="contact-success" role="status">
                 {t.contact.success}
+              </p>
+            ) : null}
+
+            {status === 'error' ? (
+              <p id={formStatusId} className="contact-error" role="alert">
+                {t.contact.sendError}
               </p>
             ) : null}
           </form>

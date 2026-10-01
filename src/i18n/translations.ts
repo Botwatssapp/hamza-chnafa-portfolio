@@ -125,10 +125,12 @@ type Dictionary = {
     messageLabel: string
     messagePlaceholder: string
     submit: string
+    sending: string
     nameRequired: string
     emailInvalid: string
     messageRequired: string
     success: string
+    sendError: string
     emailMethod: string
     githubMethod: string
     linkedinMethod: string
@@ -320,10 +322,12 @@ export const translations: Record<Locale, Dictionary> = {
       messageLabel: 'Message',
       messagePlaceholder: 'Tell me about your project or opportunity...',
       submit: 'Send Message',
+      sending: 'Sending...',
       nameRequired: 'Name is required.',
       emailInvalid: 'Please enter a valid email address.',
       messageRequired: 'Message is required.',
-      success: 'Your message is ready to be sent.',
+      success: 'Message sent successfully. Thank you for contacting me.',
+      sendError: 'Failed to send the message. Please try again.',
       emailMethod: 'Email',
       githubMethod: 'GitHub',
       linkedinMethod: 'LinkedIn',
@@ -478,10 +482,12 @@ export const translations: Record<Locale, Dictionary> = {
       messageLabel: 'Message',
       messagePlaceholder: 'Parlez-moi de votre projet ou de votre opportunité...',
       submit: 'Envoyer le message',
+      sending: 'Envoi...',
       nameRequired: 'Le nom est obligatoire.',
       emailInvalid: 'Veuillez saisir une adresse e-mail valide.',
       messageRequired: 'Le message est obligatoire.',
-      success: 'Votre message est prêt à être envoyé.',
+      success: 'Message envoyé avec succès. Merci de m’avoir contacté.',
+      sendError: 'Échec de l’envoi du message. Veuillez réessayer.',
       emailMethod: 'Email',
       githubMethod: 'GitHub',
       linkedinMethod: 'LinkedIn',
@@ -629,10 +635,12 @@ export const translations: Record<Locale, Dictionary> = {
       messageLabel: 'الرسالة',
       messagePlaceholder: 'أخبرني عن مشروعك أو فرصتك...',
       submit: 'إرسال الرسالة',
+      sending: 'جارٍ الإرسال...',
       nameRequired: 'الاسم مطلوب.',
       emailInvalid: 'يرجى إدخال بريد إلكتروني صالح.',
       messageRequired: 'الرسالة مطلوبة.',
-      success: 'رسالتك جاهزة للإرسال.',
+      success: 'تم إرسال الرسالة بنجاح. شكرًا لتواصلك معي.',
+      sendError: 'فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.',
       emailMethod: 'البريد الإلكتروني',
       githubMethod: 'GitHub',
       linkedinMethod: 'LinkedIn',
