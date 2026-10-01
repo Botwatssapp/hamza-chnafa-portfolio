@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://hamza-chnafa-portfolio.vercel.app/sitemap.xml

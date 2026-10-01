@@ -36,6 +36,8 @@ function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
   element.setAttribute('content', content)
 }
 
+const SITE_URL = 'https://hamza-chnafa-portfolio.vercel.app/'
+
 function applyDocumentLocale(locale: Locale) {
   const meta = LOCALE_META[locale]
   const copy = translations[locale]
@@ -47,6 +49,7 @@ function applyDocumentLocale(locale: Locale) {
   upsertMeta('name', 'description', copy.document.description)
   upsertMeta('name', 'twitter:title', copy.document.title)
   upsertMeta('name', 'twitter:description', copy.document.description)
+  upsertMeta('property', 'og:url', SITE_URL)
   upsertMeta('property', 'og:title', copy.document.title)
   upsertMeta('property', 'og:description', copy.document.description)
   upsertMeta('property', 'og:locale', meta.ogLocale)
